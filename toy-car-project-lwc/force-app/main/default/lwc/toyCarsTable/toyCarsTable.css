@@ -1,0 +1,31 @@
+.headerTitle {
+    padding-bottom: 5px;
+}
+
+.countBadge {
+    margin-left: 10px;   
+    background-color:aqua; 
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: center;
+    padding: 5px;
+}
+
+td {
+    padding: 10px;
+}
+
+.noImageMessage {
+    font-weight: bold;
+    color: red;
+}
+
+.imageCell {
+    padding: 0;
+}
