@@ -2,7 +2,6 @@
     <h1 class="headerTitle">Toy Cars 
         <lightning-badge label={toyCarsList.length} class="countBadge"></lightning-badge>
     </h1>
-
     <table>
         <thead>
         <tr>
@@ -12,26 +11,26 @@
             <th>Year</th>
             <th>Toy Manufacturer</th>
             <th>Color</th>
-            <!-- <th>Variant</th> -->
+            <th>Variant</th>
             <th>Photo</th>
         </tr>
         </thead>
         <tbody>
             <template for:each={toyCarsList} for:item="toyCar">
-                <tr key={toyCar.Id}>
+                <tr key={toyCar.toyCarId}>
                     <td>{toyCar.idx}</td>
-                    <td>{toyCar.Car_Manufacturer__r.Car_Manufacturer_Name__c}</td>
-                    <td>{toyCar.Toy_Car_Name__c}</td>
-                    <td>{toyCar.Car_Year__c}</td>
-                    <td>{toyCar.Toy_Manufacturer__r.Toy_Manufacturer_Name__c}</td>
-                    <td>{toyCar.Color__c}</td>
-                    <!-- <td>{toyCar.Variant__c}</td> -->
+                    <td>{toyCar.carManufacturerName}</td>
+                    <td>{toyCar.toyCarName}</td>
+                    <td>{toyCar.carYear}</td>
+                    <td>{toyCar.toyManufacturerName}</td>
+                    <td>{toyCar.color}</td>
+                    <td>{toyCar.variant}</td>
                     <td class="imageCell">                        
-                        <img if:true={toyCar.Photo__c} src={toyCar.Photo__c} height="150" width="250"/>
-                        <p if:false={toyCar.Photo__c} class="noImageMessage">Image not found!</p>
+                        <img if:true={toyCar.photoUrl} src={toyCar.photoUrl} height="150" width="250"/>
+                        <p if:false={toyCar.photoUrl} class="noImageMessage">Image not found!</p>
                     </td>
                 </tr>
             </template>            
         </tbody>
-    </table>    
+    </table>   
 </template>

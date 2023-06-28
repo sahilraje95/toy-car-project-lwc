@@ -1,11 +1,10 @@
 import { LightningElement } from 'lwc';
 import getToyCarsList from '@salesforce/apex/ToyCarController.getToyCarsList';
-import toyCarsImages from '@salesforce/resourceUrl/toyCarsImages';
 
 export default class ToyCarsTable extends LightningElement {
 
     toyCarsList = [];
-    toyCarsImagesURL = toyCarsImages;
+    imgSrc = '';
 
     connectedCallback() {
         this.getToyCarsList();
@@ -14,18 +13,20 @@ export default class ToyCarsTable extends LightningElement {
     getToyCarsList() {
         getToyCarsList()
             .then(result => {
-                // console.log('Result:', result);
-                result.forEach((item, idx) => {
+                // console.log('Response from getToyCarsList:', result);                 
+                this.imgSrc = window.location.origin + '/sfc/servlet.shepherd/version/download/';
+                 result.forEach((item, idx) => {
                     item.idx = idx + 1;
-                    if (item.Photo__c) {
-                        item.Photo__c = this.toyCarsImagesURL + '/images/' + item.Photo__c;
+                    if (item.photoUrl) {
+                        item.photoUrl = this.imgSrc + item.photoUrl;
                     }
                 });
-                // console.log('Result:', result);
-                this.toyCarsList = result;
+                // console.log('Modified response from getToyCarsList:', result);
+                this.toyCarsList = JSON.parse(JSON.stringify(result));
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error in getToyCarsList:', error);
             })
     }
+
 }
