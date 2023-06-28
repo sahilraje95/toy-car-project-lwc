@@ -22,7 +22,7 @@ export default class ToyCarsTable extends LightningElement {
                     }
                 });
                 // console.log('Modified response from getToyCarsList:', result);
-                this.toyCarsList = JSON.parse(JSON.stringify(result));
+                this.toyCarsList = result;
             })
             .catch(error => {
                 console.error('Error in getToyCarsList:', error);
