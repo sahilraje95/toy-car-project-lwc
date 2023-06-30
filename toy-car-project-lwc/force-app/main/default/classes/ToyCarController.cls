@@ -19,34 +19,27 @@ public with sharing class ToyCarController {
         public String photoUrl;
     }    
 
-    private static String getRecordAttachments(Id toyCarId){
-        try {          
-            String contentVersionId = '', contentDocumentLinkId = '';              
-            // List<ContentDocumentLink> contentDocumentLinkList = 
-            // [SELECT Id, LinkedEntityId, ContentDocumentId, Visibility, IsDeleted, ShareType, ContentDocument.Title, ContentDocument.createdDate FROM ContentDocumentLink WHERE LinkedEntityId IN :setToyCarIds];
-            List<ContentDocumentLink> contentDocumentLinkList = [SELECT Id, ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :toyCarId LIMIT 1];
-            // System.debug('ToyCarController getRecordAttachments contentDocumentLinkList debug: '+contentDocumentLinkList);
-            if(contentDocumentLinkList.size() > 0) {
-                contentDocumentLinkId = contentDocumentLinkList[0].Id;
-                // System.debug('ToyCarController getRecordAttachments contentDocumentLink debug: '+contentDocumentLink);
-                List<ContentVersion> contentVersionIdList = [SELECT Id, Title FROM ContentVersion WHERE ContentDocumentId = :contentDocumentLinkList[0].ContentDocumentId LIMIT 1];
-                // System.debug('ToyCarController getRecordAttachments contentVersionIdList debug: '+contentVersionIdList);
-                if(contentVersionIdList.size() > 0) {
-                    contentVersionId = contentVersionIdList[0].Id;
-                    // System.debug('ToyCarController getRecordAttachments contentVersionId debug: '+contentVersionId);
-                }
-            }            
-            return contentVersionId;                
-        } catch (Exception ex) {
-            System.debug('Exception in getRecordAttachments: ' + ex + ', Cause: ' + ex.getCause() + ', Line number: ' + ex.getLineNumber() + ', Message: ' + ex.getMessage() + ', Get stack trace: ' + ex.getStackTraceString() + ', Get type: ' + ex.getTypeName());
-            throw new AuraHandledException(ex.getMessage());
-        }
-    }
-
     @AuraEnabled
     public static List<ToyCarWrapper> getToyCarsList() {
         try {
-            List<ToyCarWrapper> toyCarWrapperList = new List<ToyCarWrapper>();                                   
+            Set<Id> setOfToyCarIds = new Set<Id>();
+            for(Toy_Car__c tc: [SELECT Id FROM Toy_Car__c]) {
+                setOfToyCarIds.add(tc.Id);
+            }
+            /*
+            System.debug('Toy Car IDS: '+ setOfToyCarIds);
+            system.debug('SET size = ' + setOfToyCarIds.size());
+            for (ID a : setOfToyCarIds) {
+                System.debug('A Toy car ID = ' + a);
+            } 
+            */
+            Map<Id, Id> mapOfToyCarToContentVersionId = new Map<Id, Id>();            
+            for(ContentDocumentLink cdl: [SELECT ContentDocument.LatestPublishedVersionId, LinkedEntityId FROM ContentDocumentLink WHERE LinkedEntityId IN :setOfToyCarIds]) {
+                mapOfToyCarToContentVersionId.put(cdl.LinkedEntityId, cdl.ContentDocument.LatestPublishedVersionId);
+            }
+            // System.debug('Map of Toy car to CDL: '+mapOfToyCarToContentVersionId);
+
+            List<ToyCarWrapper> toyCarWrapperList = new List<ToyCarWrapper>();     
             ToyCarWrapper toyCarWrapperObj;
             for(Toy_Car__c toyCar: [
                 SELECT 
@@ -71,10 +64,9 @@ public with sharing class ToyCarController {
                     toyCarWrapperObj.toyManufacturerName = toyCar.Toy_Manufacturer__r.Toy_Manufacturer_Name__c;
                     toyCarWrapperObj.color = toyCar.Color__c;
                     toyCarWrapperObj.variant = toyCar.Variant__c;
-                    toyCarWrapperObj.photoUrl = getRecordAttachments(toyCar.Id);
+                    toyCarWrapperObj.photoUrl = mapOfToyCarToContentVersionId.get(toyCar.Id);
                     toyCarWrapperList.add(toyCarWrapperObj);
                 }
-
             if(toyCarWrapperList.size()>0) {
                 return toyCarWrapperList;
             } else {
