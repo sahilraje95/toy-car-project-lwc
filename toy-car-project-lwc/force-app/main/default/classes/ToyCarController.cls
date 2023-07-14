@@ -20,7 +20,7 @@ public with sharing class ToyCarController {
     }    
 
     @AuraEnabled
-    public static List<ToyCarWrapper> getToyCarsList() {
+    public static List<ToyCarWrapper> getToyCarsList(String filterValue) {
         try {
             Set<Id> setOfToyCarIds = new Set<Id>();
             for(Toy_Car__c tc: [SELECT Id FROM Toy_Car__c]) {
@@ -41,21 +41,19 @@ public with sharing class ToyCarController {
 
             List<ToyCarWrapper> toyCarWrapperList = new List<ToyCarWrapper>();     
             ToyCarWrapper toyCarWrapperObj;
-            for(Toy_Car__c toyCar: [
-                SELECT 
-                Id, 
-                Car_Manufacturer__c,
-                Car_Year__c,
-                Color__c,
-                Name,
-                Toy_Car_Name__c,
-                Toy_Manufacturer__r.Toy_Manufacturer_Name__c,
-                Toy_Year__c,
-                Car_Manufacturer__r.Car_Manufacturer_Name__c,
-                Variant__c,
-                Pack__c
-                FROM Toy_Car__c
-                ORDER BY Car_Manufacturer__r.Car_Manufacturer_Name__c]) {
+            String toyCarSOQL = '';
+            if(filterValue.equalsIgnoreCase('all')) {
+                toyCarSOQL = 'SELECT Id, Car_Manufacturer__c, Car_Year__c, Color__c, Name, Toy_Car_Name__c, Toy_Manufacturer__r.Toy_Manufacturer_Name__c, Toy_Year__c, Car_Manufacturer__r.Car_Manufacturer_Name__c, Variant__c, Pack__c FROM Toy_Car__c ORDER BY Toy_Manufacturer__r.Toy_Manufacturer_Name__c';
+            } else if(filterValue.equalsIgnoreCase('carMfgAsc')) {
+                toyCarSOQL = 'SELECT Id, Car_Manufacturer__c, Car_Year__c, Color__c, Name, Toy_Car_Name__c, Toy_Manufacturer__r.Toy_Manufacturer_Name__c, Toy_Year__c, Car_Manufacturer__r.Car_Manufacturer_Name__c, Variant__c, Pack__c FROM Toy_Car__c ORDER BY Car_Manufacturer__r.Car_Manufacturer_Name__c';
+            } else if(filterValue.equalsIgnoreCase('carDateAsc')) {
+                toyCarSOQL = 'SELECT Id, Car_Manufacturer__c, Car_Year__c, Color__c, Name, Toy_Car_Name__c, Toy_Manufacturer__r.Toy_Manufacturer_Name__c, Toy_Year__c, Car_Manufacturer__r.Car_Manufacturer_Name__c, Variant__c, Pack__c FROM Toy_Car__c WHERE Car_Manufacturer__r.Car_Manufacturer_Name__c <> \'Fantasy\' ORDER BY Car_Year__c';
+            }
+            else if(filterValue.equalsIgnoreCase('openForTrade')) {
+                toyCarSOQL = 'SELECT Id, Car_Manufacturer__c, Car_Year__c, Color__c, Name, Toy_Car_Name__c, Toy_Manufacturer__r.Toy_Manufacturer_Name__c, Toy_Year__c, Car_Manufacturer__r.Car_Manufacturer_Name__c, Variant__c, Pack__c FROM Toy_Car__c WHERE Open_for_trade__c = true ORDER BY Toy_Manufacturer__r.Toy_Manufacturer_Name__c';
+            }
+       
+            for(Toy_Car__c toyCar: Database.query(toyCarSOQL)) {
                     toyCarWrapperObj = new ToyCarWrapper();
                     toyCarWrapperObj.toyCarId = toyCar.Id;
                     toyCarWrapperObj.carManufacturerName = toyCar.Car_Manufacturer__r.Car_Manufacturer_Name__c;

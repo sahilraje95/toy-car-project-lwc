@@ -38,3 +38,8 @@ $RECYCLE.BIN/
 
 # Local environment variables
 .env
+
+.gitignore
+
+#Custom
+force-app/main/default/staticresources/Extra

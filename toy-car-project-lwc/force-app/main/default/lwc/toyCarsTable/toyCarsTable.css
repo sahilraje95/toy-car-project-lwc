@@ -1,3 +1,17 @@
+.header--container, 
+.layout--button--container  {
+    display: flex;
+    justify-content: space-between;
+}
+
+.layout--button--container {
+    align-items: center;
+}
+
+.change--layout--heading {
+    margin-right: 5px;
+}
+
 .headerTitle {
     padding-bottom: 5px;
     font-size: 20px;
@@ -5,8 +19,9 @@
 
 .countBadge {
     margin-left: 10px;   
-    background-color:aqua; 
+    background-color:azure; 
     font-size: 20px;
+    border: 1px solid gray;
 }
 
 table, th, td {
@@ -19,15 +34,89 @@ th {
     padding: 5px;
 }
 
-td {
-    padding: 10px;
+.cell--content {
+    padding-left: 10px;
 }
 
-.noImageMessage {
+.table--layout--image,
+.toy--car--image {    
+    border-radius: 5px;
+    display: block;
+    height: 115px;
+    width: 160px;
+    margin: auto;    
+}
+
+.toy--car--image {
+    margin-top: 10px;
+}
+
+.noImageMessage,
+.no--items--found--message {
     font-weight: bold;
-    color: red;
+    color: maroon;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.no--items--found--message {
+    font-size: 20px;    
 }
 
 .imageCell {
-    padding: 0;
+    padding: 5px 0px;
+}
+
+.details--card {
+    border-radius: 10px;
+    padding: 10px 5px;
+    box-shadow: 0px 0.1px 2px #888;   
+    margin-bottom: 10px;
+    width: 200px;
+    border: 1px solid gray;
+}
+
+.logo--container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.serial--number--badge {
+    border: 1px solid gray;
+    background-color: azure;
+    font-size: 14px;    
+}
+
+.toy--car--manufacturer--logo {
+    margin-left: 15px;
+    width: 120px;
+}
+
+.car--manufacturer--logo {
+    width: 100px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.car--manufacturer--name {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.toy--car--details {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.details--card--container {
+    grid-template-columns: auto auto auto auto;
+    padding-top: 5px;
+    display: grid;
+    justify-content: space-between;
+}
+
+.combobox--container {    
+    margin-left: 5px;
 }

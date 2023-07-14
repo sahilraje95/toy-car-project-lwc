@@ -1,36 +1,104 @@
-<template>    
-    <h1 class="headerTitle">Toy Cars 
-        <lightning-badge label={toyCarsList.length} class="countBadge"></lightning-badge>
-    </h1>
-    <table>
-        <thead>
-        <tr>
-            <th>Sr. No</th>
-            <th>Car Manufacturer</th>
-            <th>Model Name</th>
-            <th>Year</th>
-            <th>Toy Manufacturer</th>
-            <th>Color</th>
-            <th>Variant</th>
-            <th>Photo</th>
-        </tr>
-        </thead>
-        <tbody>
-            <template for:each={toyCarsList} for:item="toyCar">
-                <tr key={toyCar.toyCarId}>
-                    <td>{toyCar.idx}</td>
-                    <td>{toyCar.carManufacturerName}</td>
-                    <td>{toyCar.toyCarName}</td>
-                    <td>{toyCar.carYear}</td>
-                    <td>{toyCar.toyManufacturerName}</td>
-                    <td>{toyCar.color}</td>
-                    <td>{toyCar.variant}</td>
-                    <td class="imageCell">                        
-                        <img if:true={toyCar.photoUrl} src={toyCar.photoUrl} height="150" width="200"/>
-                        <p if:false={toyCar.photoUrl} class="noImageMessage">Image not found!</p>
-                    </td>
-                </tr>
-            </template>            
-        </tbody>
-    </table>   
+<template>
+
+    <div class="header--container">
+        <h1 class="headerTitle">{listHeading}
+            <lightning-badge label={toyCarsList.length} class="countBadge"></lightning-badge>
+        </h1>
+        <div class="layout--button--container">
+            <h1 class="change--layout--heading">{changeLayoutHeading}</h1>
+            <lightning-button-icon icon-name={layoutButtonIcon} onclick={handleClickLayout}
+                alternative-text="Change layout">
+            </lightning-button-icon>
+            <div class="combobox--container">
+                <lightning-combobox name="filterToyCars" label="Filter" variant="label-hidden" value={filterValue}
+                    placeholder="Select filter" options={filterOptions} onchange={handleChangeFilter}>
+                </lightning-combobox>
+            </div>
+        </div>
+    </div>
+
+    <template lwc:if={isDataListEmpty}>
+        <p class="no--items--found--message">{noItemsFoundMessage}</p>
+    </template>
+    <template lwc:else>
+        <template lwc:if={isDataListView}>
+            <!-- List Layout -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr. No</th>
+                        <th>Car Manufacturer Logo</th>
+                        <th>Car Manufacturer</th>
+                        <th>Model Name</th>
+                        <th>Year</th>
+                        <th>Toy Manufacturer Logo</th>
+                        <th>Toy Manufacturer</th>
+                        <th>Color</th>
+                        <th>Variant</th>
+                        <th>Photo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={toyCarsList} for:item="toyCar">
+                        <tr key={toyCar.toyCarId}>
+                            <td class="cell--content">{toyCar.idx}</td>
+                            <td class="imageCell">
+                                <template lwc:if={toyCar.isFantasy}>
+                                </template>
+                                <template lwc:else>
+                                    <img src={toyCar.carManufacturerLogoUrl} alt={toyCar.carManufacturerName}
+                                        class="car--manufacturer--logo" />
+                                </template>
+                            </td>
+                            <td class="cell--content">{toyCar.carManufacturerName}</td>
+                            <td class="cell--content">{toyCar.toyCarName}</td>
+                            <td class="cell--content">{toyCar.carYear}</td>
+                            <td class="imageCell">
+                                <img alt={toyCar.toyManufacturerName} class="toy--car--manufacturer--logo"
+                                src={toyCar.toyCarManufacturerLogoUrl} />
+                            </td>
+                            <td class="cell--content">{toyCar.toyManufacturerName}</td>
+                            <td class="cell--content">{toyCar.color}</td>
+                            <td class="cell--content">{toyCar.variant}</td>
+                            <td class="imageCell">
+                                <img if:true={toyCar.photoUrl} src={toyCar.photoUrl} class="table--layout--image" />
+                                <p if:false={toyCar.photoUrl} class="noImageMessage">{imageNotFoundMessage}</p>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        <template lwc:else>
+            <!-- Tiles Layout -->
+            <div class="details--card--container">
+                <template for:each={toyCarsList} for:item="toyCar">
+                    <div class="details--card grid-item" key={toyCar.toyCarId}>
+                        <div class="logo--container">
+                            <lightning-badge label={toyCar.idx} class="serial--number--badge"></lightning-badge>
+                            <img alt={toyCar.toyManufacturerName} class="toy--car--manufacturer--logo"
+                                src={toyCar.toyCarManufacturerLogoUrl} />
+                        </div>
+                        <div>
+                            <img if:true={toyCar.photoUrl} src={toyCar.photoUrl} class="toy--car--image" />
+                            <p if:false={toyCar.photoUrl} class="noImageMessage">{imageNotFoundMessage}</p>
+                        </div>
+                        <div class="toy--car--details">
+                            <template lwc:if={toyCar.isFantasy}>
+                            </template>
+                            <template lwc:else>
+                                <img src={toyCar.carManufacturerLogoUrl} alt={toyCar.carManufacturerName}
+                                    class="car--manufacturer--logo" />
+                            </template>
+                            <p class="car--manufacturer--name">{toyCar.carManufacturerName}</p>
+                            <p>{toyCar.toyCarName}</p>
+                            <p>{toyCar.carYear}</p>
+                            <p>{toyCar.color}</p>
+                            <p>{toyCar.variant}</p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </template>
 </template>
