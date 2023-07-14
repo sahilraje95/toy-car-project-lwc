@@ -27,12 +27,12 @@
                 <thead>
                     <tr>
                         <th>Sr. No</th>
-                        <th>Car Manufacturer Logo</th>
-                        <th>Car Manufacturer</th>
+                        <th>Car Mfr Logo</th>
+                        <th>Car Mfr</th>
                         <th>Model Name</th>
-                        <th>Year</th>
-                        <th>Toy Manufacturer Logo</th>
-                        <th>Toy Manufacturer</th>
+                        <!-- <th>Year</th> -->
+                        <th>Toy Mfr Logo</th>
+                        <!-- <th>Toy Mfr</th> -->
                         <th>Color</th>
                         <th>Variant</th>
                         <th>Photo</th>
@@ -51,13 +51,20 @@
                                 </template>
                             </td>
                             <td class="cell--content">{toyCar.carManufacturerName}</td>
-                            <td class="cell--content">{toyCar.toyCarName}</td>
-                            <td class="cell--content">{toyCar.carYear}</td>
+                            <td class="cell--content">
+                                <template lwc:if={toyCar.carYear}>
+                                    {toyCar.toyCarName}&nbsp;({toyCar.carYear})
+                                </template>
+                                <template lwc:else>
+                                    {toyCar.toyCarName}
+                                </template>                                
+                            </td>
+                            <!-- <td class="cell-content">{toyCar.carYear}</td> -->
                             <td class="imageCell">
                                 <img alt={toyCar.toyManufacturerName} class="toy--car--manufacturer--logo"
                                 src={toyCar.toyCarManufacturerLogoUrl} />
                             </td>
-                            <td class="cell--content">{toyCar.toyManufacturerName}</td>
+                            <!-- <td class="cell-content">{toyCar.toyManufacturerName}</td> -->
                             <td class="cell--content">{toyCar.color}</td>
                             <td class="cell--content">{toyCar.variant}</td>
                             <td class="imageCell">
@@ -76,7 +83,7 @@
                     <div class="details--card grid-item" key={toyCar.toyCarId}>
                         <div class="logo--container">
                             <lightning-badge label={toyCar.idx} class="serial--number--badge"></lightning-badge>
-                            <img alt={toyCar.toyManufacturerName} class="toy--car--manufacturer--logo"
+                            <img alt={toyCar.toyManufacturerName} class="toy--car--manufacturer--logo toy--car--manufacturer--logo--tile"
                                 src={toyCar.toyCarManufacturerLogoUrl} />
                         </div>
                         <div>
@@ -88,7 +95,7 @@
                             </template>
                             <template lwc:else>
                                 <img src={toyCar.carManufacturerLogoUrl} alt={toyCar.carManufacturerName}
-                                    class="car--manufacturer--logo" />
+                                    class="car--manufacturer--logo car--manufacturer--logo--tile" />
                             </template>
                             <p class="car--manufacturer--name">{toyCar.carManufacturerName}</p>
                             <p>{toyCar.toyCarName}</p>

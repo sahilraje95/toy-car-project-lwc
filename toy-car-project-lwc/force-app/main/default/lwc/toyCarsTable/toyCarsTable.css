@@ -35,7 +35,7 @@ th {
 }
 
 .cell--content {
-    padding-left: 10px;
+    padding: 5px;
 }
 
 .table--layout--image,
@@ -64,7 +64,7 @@ th {
 }
 
 .imageCell {
-    padding: 5px 0px;
+    padding: 5px;
 }
 
 .details--card {
@@ -88,15 +88,21 @@ th {
     font-size: 14px;    
 }
 
-.toy--car--manufacturer--logo {
-    margin-left: 15px;
+.toy--car--manufacturer--logo {    
     width: 120px;
 }
 
 .car--manufacturer--logo {
-    width: 100px;
-    margin-top: 10px;
+    width: 100px;    
+}
+
+.car--manufacturer--logo--tile {
+    margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.toy--car--manufacturer--logo--tile {
+    margin-left: 15px;
 }
 
 .car--manufacturer--name {
