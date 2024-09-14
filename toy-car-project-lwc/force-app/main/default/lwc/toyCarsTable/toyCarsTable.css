@@ -117,7 +117,7 @@ th {
 }
 
 .details--card--container {
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto auto auto;
     padding-top: 5px;
     display: grid;
     justify-content: space-between;

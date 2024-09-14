@@ -6,8 +6,15 @@ export default class ToyCarsTable extends LightningElement {
 
     toyCarLogos = toyCarLogos;
     toyCarsList = [];
+    dataTableColumns = [
+        { label: 'Car Maker', fieldName: 'carManufacturerName' },
+        { label: 'Model', fieldName: 'toyCarName' },
+        { label: 'Toy Maker', fieldName: 'toyManufacturerName' },
+        { label: 'Color', fieldName: 'color' },
+        { label: 'Variant', fieldName: 'variant' },
+    ];
     imgSrc = '';
-    layoutButtonIcon = 'utility:tile_card_list'
+    layoutButtonIcon = 'utility:list'
     filterValue = 'all';
     imageNotFoundMessage = 'Image not found'
     noItemsFoundMessage = 'No items found'
@@ -70,7 +77,6 @@ export default class ToyCarsTable extends LightningElement {
 
     handleChangeFilter(e) {
         this.filterValue = e.detail.value;
-        // console.log('Filter value:',this.filterValue);
         this.getToyCarsList();
     }
 

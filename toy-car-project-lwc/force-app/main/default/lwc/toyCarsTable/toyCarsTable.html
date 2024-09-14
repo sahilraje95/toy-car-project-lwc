@@ -23,16 +23,14 @@
     <template lwc:else>
         <template lwc:if={isDataListView}>
             <!-- List Layout -->
-            <table>
+            <!-- <table>
                 <thead>
                     <tr>
                         <th>Sr. No</th>
                         <th>Car Mfr Logo</th>
                         <th>Car Mfr</th>
                         <th>Model Name</th>
-                        <!-- <th>Year</th> -->
                         <th>Toy Mfr Logo</th>
-                        <!-- <th>Toy Mfr</th> -->
                         <th>Color</th>
                         <th>Variant</th>
                         <th>Photo</th>
@@ -59,12 +57,10 @@
                                     {toyCar.toyCarName}
                                 </template>                                
                             </td>
-                            <!-- <td class="cell-content">{toyCar.carYear}</td> -->
                             <td class="imageCell">
                                 <img alt={toyCar.toyManufacturerName} class="toy--car--manufacturer--logo"
                                 src={toyCar.toyCarManufacturerLogoUrl} />
                             </td>
-                            <!-- <td class="cell-content">{toyCar.toyManufacturerName}</td> -->
                             <td class="cell--content">{toyCar.color}</td>
                             <td class="cell--content">{toyCar.variant}</td>
                             <td class="imageCell">
@@ -74,7 +70,13 @@
                         </tr>
                     </template>
                 </tbody>
-            </table>
+            </table> -->
+            <!-- Lightning Data Table Layout -->
+            <div class="slds-m-top_xx-small">
+                <lightning-datatable key-field="toyCarId" data={toyCarsList} show-row-number-column hide-checkbox-column
+                    columns={dataTableColumns}>
+                </lightning-datatable>
+            </div>
         </template>
         <template lwc:else>
             <!-- Tiles Layout -->
@@ -83,7 +85,8 @@
                     <div class="details--card grid-item" key={toyCar.toyCarId}>
                         <div class="logo--container">
                             <lightning-badge label={toyCar.idx} class="serial--number--badge"></lightning-badge>
-                            <img alt={toyCar.toyManufacturerName} class="toy--car--manufacturer--logo toy--car--manufacturer--logo--tile"
+                            <img alt={toyCar.toyManufacturerName}
+                                class="toy--car--manufacturer--logo toy--car--manufacturer--logo--tile"
                                 src={toyCar.toyCarManufacturerLogoUrl} />
                         </div>
                         <div>
